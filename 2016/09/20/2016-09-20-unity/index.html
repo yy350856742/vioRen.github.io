@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>记一次安卓Unity3d游戏的逆向分析 | 寻沫小栈 | 风澈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用到的工具
+ApkToolBox.NET ReflectorReflexil(.NET程序编辑器)
+怎么判定它是Unity游戏呢一般的路径格式是这样的assets\bin\Data\Managed[如果是个Unity游戏却找不到dll文件那么骚年放弃吧。。。]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次安卓Unity3d游戏的逆向分析">
+<meta property="og:url" content="http://vioren.github.io/2016/09/20/2016-09-20-unity/index.html">
+<meta property="og:site_name" content="寻沫小栈 | 风澈">
+<meta property="og:description" content="使用到的工具
+ApkToolBox.NET ReflectorReflexil(.NET程序编辑器)
+怎么判定它是Unity游戏呢一般的路径格式是这样的assets\bin\Data\Managed[如果是个Unity游戏却找不到dll文件那么骚年放弃吧。。。]">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-1.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-2.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-3.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-4.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-5.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-6.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-7.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-8.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-9.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-10.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-11.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-12.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-13.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-14.png">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/pay-wx.png?imageView/2/w/300/q/90">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/pay-zfb.png?imageView/2/w/300/q/90">
+<meta property="og:updated_time" content="2016-12-28T07:48:51.690Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记一次安卓Unity3d游戏的逆向分析">
+<meta name="twitter:description" content="使用到的工具
+ApkToolBox.NET ReflectorReflexil(.NET程序编辑器)
+怎么判定它是Unity游戏呢一般的路径格式是这样的assets\bin\Data\Managed[如果是个Unity游戏却找不到dll文件那么骚年放弃吧。。。]">
+<meta name="twitter:image" content="http://odt5zm3rs.bkt.clouddn.com/unity-1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="寻沫小栈 | 风澈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico" type="image/x-ico">
+  
+  <script src="/style.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/img/head.jpeg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">风澈vio</a></h1>
+		</hgroup>
+
+		<p class="header-subtitle">程序猿Geek一枚</p>
+
+		
+		<p class="header-subtitle">关注开发、技术、互联网</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/archives">目录</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="http://github.com/vioren" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/u/2016593341" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">风澈vio</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/img/head.jpeg" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">风澈vio</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">程序猿Geek一枚</p>
+			
+			
+			<p class="header-subtitle">关注开发、技术、互联网</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">目录</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/vioren" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/u/2016593341" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-2016-09-20-unity" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      记一次安卓Unity3d游戏的逆向分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用到的工具</p>
+<p><a href="http://www.52pojie.cn/thread-429318-1-1.html" target="_blank" rel="external">ApkToolBox</a><br>.NET Reflector<br>Reflexil(.NET程序编辑器)</p>
+<p>怎么判定它是Unity游戏呢<br>一般的路径格式是这样的assets\bin\Data\Managed<br>[如果是个Unity游戏却找不到dll文件那么骚年放弃吧。。。]<br><a id="more"></a></p>
+<p><img src="http://odt5zm3rs.bkt.clouddn.com/unity-1.png" alt=""><br>一般情况下都是修改上图的这个dll文件<br>[如果想要搜索的东西不在这个dll文件可借用UltraEdit、EditPlus、Notepad++等常用编辑工具辅助搜索来判断对哪个dll文件进行修改</p>
+<p><strong>以Jam City这款游戏为例来作以下分析：</strong></p>
+<p>内购破解部分就不讲了，因为下面将要修改的比内购的要来的痛快<br>用ApkToolBox反编译之后找到dll文件就是上图的那个文件用.NET Reflector打开<br>[<strong>.NET Reflector工具的基本使用方法请自行百度</strong>]<br>在手机上试玩了下这个游戏 篮板和抢断的路线根本就不明确嘛。。。</p>
+<p>金币-Coin、等级-Level  那么着重修改这两个值吧</p>
+<p>按下F3搜索，切换到方法搜索<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-2.png" alt=""><br>搜到的内容这么多  改哪个呢 头疼啊！</p>
+<p>等等！unity3d提供的有存档类啊！这是一大重要的切入点O(∩_∩)O~</p>
+<blockquote>
+<p>unity3d提供了一个用于本地持久化保存与读取的类——PlayerPrefs。其工作原理非常简单，以键值对的形式将数据保存在文件中，然后程序可以根据这个名称取出上次保存的数值。<br>PlayerPrefs类支持3种数据类型的保存和读取，浮点型，整形，和字符串型。</p>
+</blockquote>
+<p>游戏本地存档的主要方式无外乎xml文件和数据库存储两种，我们安装运行该游戏并简单的通过买物品和升级改变金币和等级的数值。</p>
+<p>然后通过R.E.管理器进入/data/data/com.batteryacid.jamcity/shared_prefs/<br>果然我们发现了命名包含playerprefs的xml存档文件<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-3.png" alt=""></p>
+<p>查看该文件，如下图，我们发现了与游戏中数值对应的两个 字符串-整型 键值对条目：<br>金币Currency和等级CurrentLevel<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-4.png" alt=""></p>
+<p>我们回到.NET Reflector 切换到类搜索，搜索PlayerPrefs得到下图结果，双击进入位于Assembly-CSharp集中的PlayerPrefsx类<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-5.png" alt=""></p>
+<p>双击进入GetInt(String,Int32)整型方法，Tools —- reflexil v1.6 开启reflexil工具<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-6.png" alt=""></p>
+<p>然后在第一行“Create new…”新建字符串类型(OpCade代码为ldstr)，最后“Insert before select”插入到第一行前<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-7.png" alt=""></p>
+<p>在第二行新建整型(OpCade代码为ldc.i4)<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-8.png" alt=""></p>
+<p>在第三行新建方法(OpCade代码为call)，<br>并在PlayerPrefsx类中选择GetInt(System.String,System.Int32)方法<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-9.png" alt=""></p>
+<p>这样，我们就将Currency强制设置为66666668了<br>回到dll文件名这里，右键鼠标移到Reflexil v1.6保存dll<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-10.png" alt=""></p>
+<p>保存之后，F5刷新一下，如下图，代码中显示的是强制设置为了66666668<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-11.png" alt=""></p>
+<p>同理，我们也将等级CurrentLevel也强制设置为20<br><img src="http://odt5zm3rs.bkt.clouddn.com/unity-12.png" alt=""></p>
+<p>保存dll文件用IDE编译出来apk  看看效果</p>
+<p><img src="http://odt5zm3rs.bkt.clouddn.com/unity-13.png" alt=""></p>
+<p><img src="http://odt5zm3rs.bkt.clouddn.com/unity-14.png" alt=""></p>
+<p>好了，初始金币和等级都修改成功</p>
+<p><strong>步骤回顾：<br>1、反编译apk<br>2、利用.NET Reflector反编译dll<br>3、通过Unity3d的PlayerPrefs方法了解其写入读取过程<br>4、通过查找存档xml文件找到相应控制条件<br>5、在dll中找到相应位置修改代码段</strong></p>
+<p><strong>总结：<br>本文主要介绍安卓unity3d游戏的本地数据的修改方法。</strong></p>
+<hr>
+<p>如果你觉得本文对你有所帮助，可以请我喝杯咖啡 : )</p>
+<p><img src="http://odt5zm3rs.bkt.clouddn.com/pay-wx.png?imageView/2/w/300/q/90" alt=""><img src="http://odt5zm3rs.bkt.clouddn.com/pay-zfb.png?imageView/2/w/300/q/90" alt=""></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2016/09/20/2016-09-20-unity/" class="archive-article-date">
+  	<time datetime="2016-09-20T15:27:09.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-09-20</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反编译/">反编译</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/09/22/2016-09-22-hexo/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          使用GitHub和Hexo搭建免费静态Blog
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/01/2016-05-01-journey/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">玩转QQ空间之假装在度假</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2016-09-20-unity" data-title="记一次安卓Unity3d游戏的逆向分析" data-url="http://vioren.github.io/2016/09/20/2016-09-20-unity/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"windclear"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = '/js/embed.js';
+		<!-- ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; -->
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		Copyright &copy; 2015-2016 风澈vio
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> thanks Litten
+      		<script>
+						var _hmt = _hmt || [];
+						(function() {
+					  var hm = document.createElement("script");
+					  hm.src = "//hm.baidu.com/hm.js?dcdc316baf643be50e568885064e1088";
+					  var s = document.getElementsByTagName("script")[0]; 
+  					s.parentNode.insertBefore(hm, s);
+						})();
+					</script>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: false,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/App/" style="font-size: 16.67px;">App</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/作废/" style="font-size: 13.33px;">作废</a> <a href="/tags/反编译/" style="font-size: 10px;">反编译</a> <a href="/tags/汉化/" style="font-size: 16.67px;">汉化</a> <a href="/tags/破解/" style="font-size: 13.33px;">破解</a> <a href="/tags/软件开发/" style="font-size: 16.67px;">软件开发</a> <a href="/tags/随笔/" style="font-size: 20px;">随笔</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">　　　打雷会下雨，下雨要打伞，　天冷穿棉袄，天热扇扇子。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

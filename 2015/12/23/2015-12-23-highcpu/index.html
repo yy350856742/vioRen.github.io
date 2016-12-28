@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>tomcat+java的web程序持续占cpu问题调试 | 寻沫小栈 | 风澈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[线上应用故障排查之：高CPU占用]一个应用占用CPU很高，除了确实是计算密集型应用之外，通常原因都是出现了死循环。以我们最近出现的一个实际故障为例，介绍怎么定位和解决这类问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tomcat+java的web程序持续占cpu问题调试">
+<meta property="og:url" content="http://vioren.github.io/2015/12/23/2015-12-23-highcpu/index.html">
+<meta property="og:site_name" content="寻沫小栈 | 风澈">
+<meta property="og:description" content="[线上应用故障排查之：高CPU占用]一个应用占用CPU很高，除了确实是计算密集型应用之外，通常原因都是出现了死循环。以我们最近出现的一个实际故障为例，介绍怎么定位和解决这类问题。">
+<meta property="og:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_1.jpg">
+<meta property="og:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_2.jpg">
+<meta property="og:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_3.jpg">
+<meta property="og:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_4.jpg">
+<meta property="og:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_5.jpg">
+<meta property="og:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_6.jpg">
+<meta property="og:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_7.jpg">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/pay-wx.png?imageView/2/w/300/q/90">
+<meta property="og:image" content="http://odt5zm3rs.bkt.clouddn.com/pay-zfb.png?imageView/2/w/300/q/90">
+<meta property="og:updated_time" content="2016-12-28T07:48:25.606Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tomcat+java的web程序持续占cpu问题调试">
+<meta name="twitter:description" content="[线上应用故障排查之：高CPU占用]一个应用占用CPU很高，除了确实是计算密集型应用之外，通常原因都是出现了死循环。以我们最近出现的一个实际故障为例，介绍怎么定位和解决这类问题。">
+<meta name="twitter:image" content="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_1.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="寻沫小栈 | 风澈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico" type="image/x-ico">
+  
+  <script src="/style.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/img/head.jpeg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">风澈vio</a></h1>
+		</hgroup>
+
+		<p class="header-subtitle">程序猿Geek一枚</p>
+
+		
+		<p class="header-subtitle">关注开发、技术、互联网</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/archives">目录</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="http://github.com/vioren" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/u/2016593341" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">风澈vio</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/img/head.jpeg" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">风澈vio</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">程序猿Geek一枚</p>
+			
+			
+			<p class="header-subtitle">关注开发、技术、互联网</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">目录</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/vioren" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/u/2016593341" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-2015-12-23-highcpu" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tomcat+java的web程序持续占cpu问题调试
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="线上应用故障排查之：高CPU占用"><a href="#线上应用故障排查之：高CPU占用" class="headerlink" title="[线上应用故障排查之：高CPU占用]"></a>[线上应用故障排查之：高CPU占用]</h3><p>一个应用占用CPU很高，除了确实是计算密集型应用之外，通常原因都是出现了死循环。<br>以我们最近出现的一个实际故障为例，介绍怎么定位和解决这类问题。<br><a id="more"></a><br><strong>现象：</strong><br>在tomcat中部署java的web应用程序，过一段时间后出现tomcat的java进程持续占用cpu高达100%，导致web程序访问受阻。<br><strong>可能原因分析：</strong><br>可能程序确实在进行数据计算；或程序进入死循环。<br><strong>解决方法：</strong></p>
+<ol>
+<li>根据<code>top</code>命令，查看占用cpu的进程PID，发现PID为2738的Java进程占用CPU高达99.9%，出现故障。<br><img src="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_1.jpg" alt=""></li>
+<li>通过<code>ps aux | grep PID</code>或<code>ps -ef | grep PID</code>命令，定位具体的进程主体，如是否是tomcat启动的java进程出现了问题。但是，怎么定位到具体线程或者代码呢？<br><img src="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_2.jpg" alt=""><br><strong>首先显示线程列表:</strong></li>
+<li>用<code>ps -mp PID -o THREAD,tid,time</code>命令打印出该进程下的线程占用cpu情况<br><img src="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_3.jpg" alt=""><br><img src="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_4.jpg" alt=""><br><strong>找到了耗时最高的线程2804，占用CPU时间快三个半小时了！</strong></li>
+<li>其次用<code>printf &quot;%x\n&quot; TID</code>命令将需要的线程ID转换为16进制格式：<br><img src="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_5.jpg" alt=""></li>
+<li>最后用<code>jstack PID |grep tid -A 30</code>命令打印线程的堆栈信息：<br><img src="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_6.jpg" alt=""></li>
+</ol>
+<p><strong>找到出现问题的代码了！</strong></p>
+<p>现在来分析下具体的代码即可：</p>
+<p>找到出现问题的代码，并分析具体函数中是否有可能出现死循环的代码段。<br>通常问题出现在while， for之类的循环代码片段。</p>
+<blockquote>
+<p>AlarmSendListener.run(AlarmSendListener.java:98)<br>SnmpTrapThreads.run(SnmpTrapThreads.java:66)<br>ProduceAlarmEvent.run(ProduceAlarmEvent.java:50)<br><img src="http://7xou8l.com1.z0.glb.clouddn.com/highcpu_7.jpg" alt=""></p>
+</blockquote>
+<p><strong>最后，总结下排查CPU故障的方法和技巧有哪些：</strong><br>1、top命令：Linux命令。可以查看实时的CPU使用情况。也可以查看最近一段时间的CPU使用情况。<br>2、PS命令：Linux命令。强大的进程状态监控命令。可以查看进程以及进程中线程的当前CPU使用情况。属于当前状态的采样数据。<br>3、jstack：Java提供的命令。可以查看某个进程的当前线程栈运行情况。根据这个命令的输出可以定位某个进程的所有线程的当前运行状态、运行代码，以及是否死锁等等。<br>4、pstack：Linux命令。可以查看某个进程的当前线程栈运行情况。</p>
+<p style="font-size:1px">　　　　　　　　　　　　　　　　　　　　　　　　　　　感谢<a href="http://www.blogjava.net/hankchen" target="_blank" rel="external">hankchen</a></p>
+
+
+
+<hr>
+<p>如果你觉得本文对你有所帮助，可以请我喝杯咖啡 : )</p>
+<p><img src="http://odt5zm3rs.bkt.clouddn.com/pay-wx.png?imageView/2/w/300/q/90" alt=""><img src="http://odt5zm3rs.bkt.clouddn.com/pay-zfb.png?imageView/2/w/300/q/90" alt=""></p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2015/12/23/2015-12-23-highcpu/" class="archive-article-date">
+  	<time datetime="2015-12-23T06:17:44.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-12-23</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/软件开发/">软件开发</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/01/01/2016-01-01-lego1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          英夫妇带&quot;乐高玩具人偶&quot;全球旅行，另类情侣照获热捧。
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/09/2015-12-09-12306/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">有趣的12306验证码</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015-12-23-highcpu" data-title="tomcat+java的web程序持续占cpu问题调试" data-url="http://vioren.github.io/2015/12/23/2015-12-23-highcpu/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"windclear"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = '/js/embed.js';
+		<!-- ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; -->
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		Copyright &copy; 2015-2016 风澈vio
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> thanks Litten
+      		<script>
+						var _hmt = _hmt || [];
+						(function() {
+					  var hm = document.createElement("script");
+					  hm.src = "//hm.baidu.com/hm.js?dcdc316baf643be50e568885064e1088";
+					  var s = document.getElementsByTagName("script")[0]; 
+  					s.parentNode.insertBefore(hm, s);
+						})();
+					</script>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: false,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/App/" style="font-size: 16.67px;">App</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/作废/" style="font-size: 13.33px;">作废</a> <a href="/tags/反编译/" style="font-size: 10px;">反编译</a> <a href="/tags/汉化/" style="font-size: 16.67px;">汉化</a> <a href="/tags/破解/" style="font-size: 13.33px;">破解</a> <a href="/tags/软件开发/" style="font-size: 16.67px;">软件开发</a> <a href="/tags/随笔/" style="font-size: 20px;">随笔</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">　　　打雷会下雨，下雨要打伞，　天冷穿棉袄，天热扇扇子。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>

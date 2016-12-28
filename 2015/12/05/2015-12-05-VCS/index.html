@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>几种VCS(版本控制系统)的特点和异同 | 寻沫小栈 | 风澈</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="版本控制系统（version control system）,是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。用的比较多的如svn，git等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几种VCS(版本控制系统)的特点和异同">
+<meta property="og:url" content="http://vioren.github.io/2015/12/05/2015-12-05-VCS/index.html">
+<meta property="og:site_name" content="寻沫小栈 | 风澈">
+<meta property="og:description" content="版本控制系统（version control system）,是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。用的比较多的如svn，git等。">
+<meta property="og:updated_time" content="2016-12-28T07:48:09.961Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="几种VCS(版本控制系统)的特点和异同">
+<meta name="twitter:description" content="版本控制系统（version control system）,是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。用的比较多的如svn，git等。">
+  
+    <link rel="alternative" href="/atom.xml" title="寻沫小栈 | 风澈" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico" type="image/x-ico">
+  
+  <script src="/style.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/img/head.jpeg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">风澈vio</a></h1>
+		</hgroup>
+
+		<p class="header-subtitle">程序猿Geek一枚</p>
+
+		
+		<p class="header-subtitle">关注开发、技术、互联网</p>
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/archives">目录</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="http://github.com/vioren" title="github">github</a>
+		        
+					<a class="weibo" target="_blank" href="http://weibo.com/u/2016593341" title="weibo">weibo</a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">风澈vio</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/img/head.jpeg" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">风澈vio</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">程序猿Geek一枚</p>
+			
+			
+			<p class="header-subtitle">关注开发、技术、互联网</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">目录</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="http://github.com/vioren" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/u/2016593341" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-2015-12-05-VCS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      几种VCS(版本控制系统)的特点和异同
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>　　<strong>版本控制系统（version control system）</strong>,是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。用的比较多的如svn，git等。<br><a id="more"></a><br>　　为了让不同系统上的开发者能够协同工作，集中化的版本控制系统应运而生（CVCS）。这类系统都有一个单一的集中管理的服务器，保存所有文件的修订版本。而协同工作的人们都通过客户端连接到这台服务器，获取最新的文件或者提交更新。集中化的版本控制系统，最显而易见的缺点是中央服务器的单点故障问题。如果宕机，那么就会出现谁都无法提交更新的情况，那么也就无法协同工作；如果磁盘发生故障，而备份又不够即时，那么就有丢失数据的风险，最坏的情况是丢失整个项目的历史更改记录。因此，分布式版本控制系统问世了（DVCS）。</p>
+<p>　　在分布式版本控制系统中，客户端不仅仅是只提取最新版本的文件快照，而是把代码仓库完整的镜像下来。所以每一次提取的操作，都是对代码仓库的完整备份，因此也就不必担心协同工作用的服务器发生故障。</p>
+<p>　　Git和其他版本控制系统的主要差别在于：Git只关心文件数据的整体是否发生了变化，而多数的其他系统则只关心文件内容的具体差异，它们在每个版本中记录着各个文件的具体差异。在Git中的绝大多数操作都只需要访问本地文件和资源，不需要联网。这是因为Git在本地磁盘上就保留着所有当前项目的历史更新，所以处理起来速度飞快，这是使用空间换时间的处理方式。使用Git，即使在没有网络或VPN的情况下，你同样可以非常愉快的频繁提交更新，等到有了网络的时候再提交到远程的仓库。</p>
+<hr>
+<h1 id="CVS-Git-Mercurial-Subversion-的异同特征"><a href="#CVS-Git-Mercurial-Subversion-的异同特征" class="headerlink" title="CVS : Git : Mercurial : Subversion 的异同特征"></a>CVS : Git : Mercurial : Subversion 的异同特征</h1><h3 id="是否原子提交"><a href="#是否原子提交" class="headerlink" title="是否原子提交"></a><strong>是否原子提交</strong></h3><p><strong>CVS:</strong> 没有. CVS提交不是原子的<br><strong>Git:</strong> 是的. 提交都是原子的<br><strong>Mercurial:</strong> 是的<br><strong>Subversion:</strong> 提交都是原子的 </p>
+<h3 id="文件和目录是否可以移动或重命名"><a href="#文件和目录是否可以移动或重命名" class="headerlink" title="文件和目录是否可以移动或重命名"></a><strong>文件和目录是否可以移动或重命名</strong></h3><p><strong>CVS:</strong> 不是. 重命名不支持. 如果手动进行, 可能会损坏历史记录<br><strong>Git:</strong> 支持重命名, 这是很实用的目的. git甚至能检测到重命名之后文件的改变. 尽管如此, 基于特殊的存储结构, 重命名不会被显示的记录, git能够推导出来(在实际使用中很容易做到)<br><strong>Mercurial:</strong> 是的, 重命名是支持的<br><strong>Subversion:</strong> 是的. 支持重命名 </p>
+<h3 id="在移动或重命名之后智能合并"><a href="#在移动或重命名之后智能合并" class="headerlink" title="在移动或重命名之后智能合并"></a><strong>在移动或重命名之后智能合并</strong></h3><p><strong>CVS:</strong> 不能. 重命名都不支持, 就不必说智能了<br><strong>Git:</strong> 不支持. 细节在Git FAQ里: “Git有一个重命名的命令git mv, 但是这仅仅是为了便利. 效果和移掉某个文件, 增加另外一个文件没有任何区别”<br><strong>Mercurial:</strong> 是的. 重命名之后智能合并是支持的. Mercurtial文档说:“如果我修改一个文件,而你重新命名了这个文件, 然后我们合并我们的变更, 那么我所做的修改就会被更新到根据旧文件名字而产生的新文件里(这可能就是你所期望的‘最简单的动作’, 但是不是所有版本控制系统都支持)<br><strong>Subversion:</strong> 不支持. “svn help me“中提到“注意: 这个子命令相当于拷贝和删除.“并且可能有个bug</p>
+<h3 id="文件和目录拷贝"><a href="#文件和目录拷贝" class="headerlink" title="文件和目录拷贝"></a><strong>文件和目录拷贝</strong></h3><p><strong>CVS:</strong> 不能. 拷贝不支持<br><strong>Git:</strong> 不能. 拷贝不支持<br><strong>Mercurtial:</strong> 是的. 支持拷贝<br><strong>Subversion:</strong> 是的. 并且拷贝非常容易(O(1)). 包括产生分支</p>
+<h3 id="远程存储仓库的备份"><a href="#远程存储仓库的备份" class="headerlink" title="远程存储仓库的备份"></a><strong>远程存储仓库的备份</strong></h3><p><strong>CVS:</strong> 间接的. 可以使用John Polstra写的CVSup<br><strong>Git:</strong> 是的. 是git的内部特征<br><strong>Mercurial:</strong> 是的<br><strong>Subversion:</strong> 间接的. 可以使用Chia-liang Kao的SVN::Mirror插件(好像是台湾人)或Shlomi Fish的SVN-Pusher工具</p>
+<h3 id="是否传递变更到父仓库"><a href="#是否传递变更到父仓库" class="headerlink" title="是否传递变更到父仓库"></a><strong>是否传递变更到父仓库</strong></h3><p><strong>CVS:</strong> 不会<br><strong>Git:</strong> 是的(Linux内核开发过程经常使用这个特征)<br><strong>Mercurtial:</strong> 是的<br><strong>Subversion:</strong> 是的, 使用要么是Chia-Ling Kao的SVN::Mirror脚本或者Shlomi Fish的svn-push工具</p>
+<h3 id="仓库权限"><a href="#仓库权限" class="headerlink" title="仓库权限"></a><strong>仓库权限</strong></h3><p><strong>CVS:</strong> 很有限. “pre-commit hook scripts“能够被用来实现各种权限控制系统<br><strong>Git:</strong> 请看和Git一起附带的contrib/hooks/update-paranoid. 看和svnperms类似的path_rules的代码<br><strong>Mercutial:</strong> 是的. 它能够锁住仓库, 子目录或者使用hooks后的文件<br><strong>Subversion:</strong> 是的. 基于HTTP权限的WebDAV-based模块能够支持基于目录级的仓库</p>
+<h3 id="变更集"><a href="#变更集" class="headerlink" title="变更集"></a><strong>变更集</strong></h3><p><strong>CVS:</strong> 不是. 变更是基于文件的<br><strong>Git:</strong> 是的. 是支持的, 创建他们很容易<br><strong>Mercurial:</strong> 是的. 变更集是支持的<br><strong>Subversion:</strong> 部分支持. 对于一次提交会隐式创建一个变更集</p>
+<h3 id="跟踪线性的文件历史"><a href="#跟踪线性的文件历史" class="headerlink" title="跟踪线性的文件历史"></a><strong>跟踪线性的文件历史</strong></h3><p><strong>CVS:</strong> 是的. cvs annotate<br><strong>Git:</strong> 是的.(git blame)<br><strong>Mercurial:</strong> 是的(hg annotate)<br><strong>Subversion:</strong> 是的(svn blame)</p>
+<h3 id="能够只在仓库的单目录下作用"><a href="#能够只在仓库的单目录下作用" class="headerlink" title="能够只在仓库的单目录下作用"></a><strong>能够只在仓库的单目录下作用</strong></h3><p><strong>CVS:</strong> 是的<br><strong>Git:</strong> 不是. 尽管如此, 提交多少能被限制, 请看“Repository Permissions”<br><strong>Mercurial:</strong> 能够基于某树的某个子集进行提交. 也有局部检出的能力<br><strong>Subversion:</strong> 是的</p>
+<h3 id="跟踪未提交的变化"><a href="#跟踪未提交的变化" class="headerlink" title="跟踪未提交的变化"></a><strong>跟踪未提交的变化</strong></h3><p><strong>CVS:</strong> 是的. 通过cvs diff<br><strong>Git:</strong> 是的. 另外, 分支在git里非常智能, 在某些工作流里能够被当成是另外一个未提交代码的存储库. 请看“git stash“命令<br><strong>Mercurial:</strong> 是的. 使用hg diff<br><strong>Subversion:</strong> 是的. 使用svn diff</p>
+<h3 id="基于单个文件的提交信息"><a href="#基于单个文件的提交信息" class="headerlink" title="基于单个文件的提交信息"></a><strong>基于单个文件的提交信息</strong></h3><p><strong>CVS:</strong> 不是. 提交信息是基于单次变化的<br><strong>Git:</strong> 是的. 提交信息基于变更集<br><strong>Mercurial:</strong> 不是<br><strong>Subversion:</strong> 不是. 没有这个特征</p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a><strong>文档</strong></h3><p><strong>CVS:</strong> 非常棒. 有很多在线的tutorials和资源, 在线的书籍. 命令行客户端也支持一个在线的帮助系统<br><strong>Git:</strong> 良好. 短的帮助比较简洁难懂. man页很有分量, 但容易误解. 有很多tutorial<br><strong>Mercurial:</strong> 很好. 有基于公司的书籍和wiki. 每个命令都集成了帮助<br><strong>Subversion:</strong> 很好. 有一些在线的书籍和一些在线的tutorials和资源. 并且书籍是以docbook/xml写的所以很容易变换成其他格式. 命令行同样提供了在线的帮助系统</p>
+<h3 id="配置是否轻松"><a href="#配置是否轻松" class="headerlink" title="配置是否轻松"></a><strong>配置是否轻松</strong></h3><p><strong>CVS:</strong> 好. 是个事实上的标准. 基于每个系统都有并且很容易配置<br><strong>Git:</strong> 好. 在现有平台上二进制可用. 需要C编译器和Perl. 在windows上需要cygwin. 并有一些Unix特征<br><strong>Mercurial:</strong> 非常好. 几乎所有平台都有二进制包. 从源码编译需要python2.3以上, 并且需要C编译器<br><strong>Subversion:</strong> Subversion服务器需要安装在apache2模块里(如果有人希望HTTP作为底层协议的话)或使用它自身的服务器. 客户端需要Subversion特征的逻辑还有WebDAV库(针对HTTP). 安装组件很直接, 但是需要一些额外的工作(假定subversion在某些平台没有二进制包可用)</p>
+<h3 id="命令集"><a href="#命令集" class="headerlink" title="命令集"></a><strong>命令集</strong></h3><p><strong>CVS:</strong> 包含了3个经常用到的命令的简单的命令集(cvs commit, cvs update和cvs checkout)和其它一些<br><strong>Git:</strong> 命令集很丰富, 并且和CVS不兼容<br><strong>Mercurial:</strong> 尝试模仿CVS交互方式, 但是偏离了基于不同的设计的意图<br><strong>Subversion:</strong> 类CVS的命令集, 能够很容易被CVS用户使用</p>
+<h3 id="网络支持"><a href="#网络支持" class="headerlink" title="网络支持"></a><strong>网络支持</strong></h3><p><strong>CVS:</strong> 好. cvs在不同的场合使用不同的协议. 协议能够通过ssh链接的加密隧道进行<br><strong>Git:</strong> 非常棒. 能够使用本地的git协议, 但也能在rsync, ssh, HTTP和HTTPS上使用<br><strong>Mercurial:</strong> 非常棒. 使用HTTP或ssh. 远程访问会非常安全, 在只读网络里不需要上锁<br><strong>Subversion:</strong> 非常好. Subversion服务器支持WebDAV+DeltaV(基于HTTP或HTTPS)作为底层协议, 或者它自身的协议同样能在ssh链接通道里使用.</p>
+<h3 id="可移植性"><a href="#可移植性" class="headerlink" title="可移植性"></a><strong>可移植性</strong></h3><p><strong>CVS:</strong> 好. 客户端能在UNIX, Windows和Mac OS上使用. 服务器端能在UNIX, 附有UNIX模拟层的Windows上使用<br><strong>Git:</strong> 客户端运行在大多数的UNIX系统上, 但没有MS-Windows本地程序. 基于cygwin的系统看起来也能使用<br><strong>Mercurial:</strong> 非常棒. 运行在基于所有能运行python的平台.仓库是兼容性的基于CPU结构和字节序的<br><strong>Subversion:</strong> 非常好. 客户端和服务器端都能在UNIX, Windows和Mac OS X上运行</p>
+<h3 id="web接口"><a href="#web接口" class="headerlink" title="web接口"></a><strong>web接口</strong></h3><p><strong>CVS:</strong> 是的. CVSweb, ViewVC, Chora和wwCVS<br><strong>Git:</strong> 是的. Gitweb包含在发布包中<br><strong>Mercurial:</strong> 是的. Web接口是内置组件<br><strong>Subversion:</strong> 是的. ViewVC, SVN::Web, WebSVN, ViewSVN, mod_svn_view, Chora, Trac, SVN::RaWeb::Light, SVN Browser, Insurrection和perl_svn.另外, Subversion的apache服务也提供了一个基础的web接口</p>
+<h3 id="图形用户界面"><a href="#图形用户界面" class="headerlink" title="图形用户界面"></a><strong>图形用户界面</strong></h3><p><strong>CVS:</strong> 非常好. 有很多图形界面可以用: WinCVS, Cervisia(对于KDE), TortoiseCVS(Windows浏览器插件)<br><strong>Git:</strong> Gitk包含在发行版中. Qqit和Git-gui工具也可使用<br><strong>Mercurial:</strong> 通过hgit扩展查看历史; 检入扩展(hgct)使得提交很容易. 一些第三方的IDEs和GUI工具(如eric3, meld)有一些集成的Mercurial支持<br><strong>Subversion:</strong> 非常好. 有很多GUIs可用: RapidSVN(跨平台), TortoiseSVN(Windows浏览器插件), Jsvn(java), 等. 大多数都还在开发中</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2015/12/05/2015-12-05-VCS/" class="archive-article-date">
+  	<time datetime="2015-12-05T01:56:40.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-12-05</time>
+</a>
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/软件开发/">软件开发</a></li></ul>
+	</div>
+
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2015/12/08/2015-12-08-苯宝宝/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          化学geek是怎么玩坏表情包的：翻滚吧，苯宝宝！
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/04/2015-12-04-信条/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">信条</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="2015-12-05-VCS" data-title="几种VCS(版本控制系统)的特点和异同" data-url="http://vioren.github.io/2015/12/05/2015-12-05-VCS/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"windclear"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = '/js/embed.js';
+		<!-- ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js'; -->
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		Copyright &copy; 2015-2016 风澈vio
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> thanks Litten
+      		<script>
+						var _hmt = _hmt || [];
+						(function() {
+					  var hm = document.createElement("script");
+					  hm.src = "//hm.baidu.com/hm.js?dcdc316baf643be50e568885064e1088";
+					  var s = document.getElementsByTagName("script")[0]; 
+  					s.parentNode.insertBefore(hm, s);
+						})();
+					</script>
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		fancybox: false,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/"
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/App/" style="font-size: 16.67px;">App</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/作废/" style="font-size: 13.33px;">作废</a> <a href="/tags/反编译/" style="font-size: 10px;">反编译</a> <a href="/tags/汉化/" style="font-size: 16.67px;">汉化</a> <a href="/tags/破解/" style="font-size: 13.33px;">破解</a> <a href="/tags/软件开发/" style="font-size: 16.67px;">软件开发</a> <a href="/tags/随笔/" style="font-size: 20px;">随笔</a>
+    			</div>
+    	</section>
+    
+
+    
+
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">　　　打雷会下雨，下雨要打伞，　天冷穿棉袄，天热扇扇子。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </div>
+</body>
+</html>
